@@ -24,7 +24,7 @@ The maven project of illusion is main code which build up in spring-boot framewo
 
 
 
-But some issue were in there yet we need to deal with. One of them is that it still cannot process curve which contains any absolute c coordinate, e.g.M10,10Ca,b,c,d,e,f . we fix it out next time.
+But some issue were in there yet we need to deal with. One of them is that it still cannot process curve which contains any absolute c coordinate, ``e.g.M10,10Ca,b,c,d,e,f``. We fix it out next time.
 
 
 
