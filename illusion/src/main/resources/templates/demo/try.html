@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript">
+$(function(){
+	var oriStr;
+	var domOriStr = $("#originStr");
+	var initStr = "e.g. M126,132s58-120,146-45..."
+	initOri();
+	
+	$("#runTry").click(function() {
+		oriStr = null;
+		oriStr = domOriStr.val(); 
+		if(oriStr==initStr || $.trim(oriStr)=="") {
+			oriStr = "M126,132s58-120,146-45c54,46,16,144,82,181c66,37,207-19,207-19";
+		}
+		$.post("/illusion/p2b", {oriCurStr: oriStr}, function(data, status){
+			console.log("===data:" + data + ",status:" + status);
+			showCurveResult(data, status);
+			initOri();
+		})
+	});
+	
+	domOriStr.focus(function(){
+		if(domOriStr.val()==initStr) {
+			normalOri();
+		}
+	});
+	
+	domOriStr.blur(function(){
+		if(domOriStr.val()=="") {
+			initOri();
+		}	
+	});
+	
+	function showCurveResult(data, status) {
+		var view = $("#resultCurve");
+		view.text("");
+		
+		if(status != "success") {
+			view.text("Sorry, The Converting for Bezier is Failed. Please try again.");
+			return ;
+		}
+		
+		view.text("The Bezier Curve: "+ data);
+	}
+	
+	function initOri() {
+		domOriStr.val(initStr);
+		domOriStr.css("color", "gray");		
+	}
+	function normalOri() {
+		domOriStr.val("");
+		domOriStr.css("color", "black");		
+	}
+})
+</script>
+</head>
+<body>
+<h1>This is a Converter which could change v,h,s,l to standard Bezier Piont.</h1>
+<br>
+<h1>Get Try!</h1>
+<br>
+
+<h2>Please fill the point you want to change</h2>
+<br>
+<span>like: M126,132s58-120,146-45c54,46,16,144,82,181c66,37,207-19,207-19</span>
+<br>
+<br>
+
+	<div style="border: 1px solid gray; width: 300px; height: 150px;"><span id="resultCurve"></span></div>
+
+<br>
+	<input type="text" id="originStr" value="" /><br>
+	<button type="button" id="runTry">Run</button>
+
+</body>
+</html>
