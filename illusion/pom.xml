@@ -4,11 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.floyd</groupId>
 	<artifactId>illusion</artifactId>
-<<<<<<< HEAD
 	<version>0.0.2-SNAPSHOT</version>
-=======
-	<version>0.0.1-SNAPSHOT</version>
->>>>>>> 195096069dc7bc446963d8e98ac72b8185d27254
 	<packaging>jar</packaging>
 
 	<name>illusion-spring-boot</name>
