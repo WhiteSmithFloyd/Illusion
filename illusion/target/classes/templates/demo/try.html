@@ -12,7 +12,7 @@ $(function(){
 	var initStr = "e.g. M126,132s58-120,146-45..."
 	initOri();
 	
-	$("#runTry").click(function() {
+	$("#pointTryBtn").click(function() {
 		oriStr = null;
 		oriStr = domOriStr.val(); 
 		if(oriStr==initStr || $.trim(oriStr)=="") {
@@ -24,6 +24,45 @@ $(function(){
 			initOri();
 		})
 	});
+	
+	$("#circleTryBtn").click(function(){
+		oriStr = null;
+		oriStr = domOriStr.val(); 
+		if(oriStr==initStr || $.trim(oriStr)=="") {
+			oriStr = "M126,132s58-120,146-45c54,46,16,144,82,181c66,37,207-19,207-19";
+		}
+		$.post("/illusion/circle2b", {oriCirStr: oriStr}, function(data, status){
+			console.log("===data:" + data + ",status:" + status);
+			showCurveResult(data, status);
+			initOri();
+		})
+	})
+	
+	$("#rectTryBtn").click(function(){
+		oriStr = null;
+		oriStr = domOriStr.val(); 
+		if(oriStr==initStr || $.trim(oriStr)=="") {
+			oriStr = "M126,132s58-120,146-45c54,46,16,144,82,181c66,37,207-19,207-19";
+		}
+		$.post("/illusion/rect2b", {oriRectStr: oriStr}, function(data, status){
+			console.log("===data:" + data + ",status:" + status);
+			showCurveResult(data, status);
+			initOri();
+		})
+	})
+	
+	$("#polyTryBtn").click(function(){
+		oriStr = null;
+		oriStr = domOriStr.val(); 
+		if(oriStr==initStr || $.trim(oriStr)=="") {
+			oriStr = "M126,132s58-120,146-45c54,46,16,144,82,181c66,37,207-19,207-19";
+		}
+		$.post("/illusion/poly2b", {oriPolyStr: oriStr}, function(data, status){
+			console.log("===data:" + data + ",status:" + status);
+			showCurveResult(data, status);
+			initOri();
+		})
+	})
 	
 	domOriStr.focus(function(){
 		if(domOriStr.val()==initStr) {
@@ -76,7 +115,10 @@ $(function(){
 
 <br>
 	<input type="text" id="originStr" value="" /><br>
-	<button type="button" id="runTry">Run</button>
+	<button type="button" id="pointTryBtn">Normal Point Run</button>&nbsp;
+	<button type="button" id="circleTryBtn">Circle Run</button>&nbsp;
+	<button type="button" id="rectTryBtn">Rect Run</button>&nbsp;
+	<button type="button" id="polyTryBtn">Polygon Run</button>&nbsp;
 
 </body>
 </html>

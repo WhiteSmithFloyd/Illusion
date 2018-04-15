@@ -22,13 +22,28 @@ public class CurveController {
 	@RequestMapping(value="/g2b", method=RequestMethod.GET)
 	public String getToBezier() {
 //		return "Please use the Post method to request...";
-		return curvService.draw(testStr);
+		return curvService.draw4Point(testStr);
 	}
 	
 	@RequestMapping(value="/p2b", method=RequestMethod.POST)
 	public String postToBizier(@RequestParam("oriCurStr") String oriCurStr) {
 		System.out.println("===[Input] oriCurStr:" + oriCurStr);
-		return curvService.draw(oriCurStr);
+		return curvService.draw4Point(oriCurStr);
+	}
+	
+	@RequestMapping(value="/circle2b", method=RequestMethod.POST)
+	public String postCircleToBizier(@RequestParam("oriCirStr") String oriCirStr) {
+		return curvService.draw4Circle(oriCirStr);
+	}
+	
+	@RequestMapping(value="/rect2b", method=RequestMethod.POST)
+	public String postRectToBizier(@RequestParam("oriRectStr") String oriRectStr) {
+		return curvService.draw4Rect(oriRectStr);
+	}
+	
+	@RequestMapping(value="/poly2b", method=RequestMethod.POST)
+	public String postPolygonToBizier(@RequestParam("oriPolyStr") String oriPolyStr) {
+		return curvService.draw4Polygon(oriPolyStr);
 	}
 	
 }

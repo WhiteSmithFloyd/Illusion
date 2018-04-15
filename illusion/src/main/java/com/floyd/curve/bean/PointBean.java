@@ -34,6 +34,14 @@ public class PointBean {
 		return absY;
 	}
 	
+	public boolean isBeginPoint() {
+		return StringUtils.equalsIgnoreCase(AlphaStr, "M");
+	}
+	
+	public boolean isEndPoint() {
+		return StringUtils.equalsIgnoreCase(AlphaStr, "z");
+	}
+	
 	/**
 	 * Calculate and Update the absolute coordinate X and Y
 	 * @param prev
@@ -56,7 +64,10 @@ public class PointBean {
 		return true;
 	}
 	
-
+	public boolean wind() {
+		return wind(this.arrayCoordinate);
+	}
+	
 	/**
 	 * @return
 	 */
@@ -108,6 +119,11 @@ public class PointBean {
 						0 : arrayCoordinate.get(4));
 			}
 			
+			if(StringUtils.equals(AlphaStr, "s")) {
+				return prev.getAbsX() + ((arrayCoordinate==null || arrayCoordinate.size()<4) ? 
+						0 : arrayCoordinate.get(2));
+			}
+			
 			return 0;
 		}
 		
@@ -125,6 +141,11 @@ public class PointBean {
 		if(StringUtils.equals(AlphaStr, "C")) {
 			return (arrayCoordinate==null || arrayCoordinate.size()<6) ? 
 					0 : arrayCoordinate.get(4);
+		}
+		
+		if(StringUtils.equals(AlphaStr, "S")) {
+			return (arrayCoordinate==null || arrayCoordinate.size()<4) ? 
+					0 : arrayCoordinate.get(2);
 		}
 		return 0;
 	}
@@ -152,6 +173,11 @@ public class PointBean {
 						0 : arrayCoordinate.get(5));
 			}
 			
+			if(StringUtils.equals(AlphaStr, "s")) {
+				return prev.getAbsY() + ((arrayCoordinate==null || arrayCoordinate.size()<4) ? 
+						0 : arrayCoordinate.get(3));
+			}
+			
 			return 0;
 		}
 		
@@ -173,6 +199,11 @@ public class PointBean {
 		if(StringUtils.equals(AlphaStr, "C")) {
 			return (arrayCoordinate==null || arrayCoordinate.size()<6) ? 
 					0 : arrayCoordinate.get(5);
+		}
+		
+		if(StringUtils.equals(AlphaStr, "S")) {
+			return (arrayCoordinate==null || arrayCoordinate.size()<4) ? 
+					0 : arrayCoordinate.get(3);
 		}
 		return 0;
 	}

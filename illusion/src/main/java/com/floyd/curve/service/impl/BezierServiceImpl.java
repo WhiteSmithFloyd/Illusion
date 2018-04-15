@@ -6,37 +6,118 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import com.floyd.curve.bean.CircleBean;
 import com.floyd.curve.bean.PointBean;
-import com.floyd.curve.coordinate.converts.BezierConverter;
+import com.floyd.curve.bean.PolygonBean;
+import com.floyd.curve.bean.RectBean;
+import com.floyd.curve.coordinate.converts.impl.CircleBezierConverter;
+import com.floyd.curve.coordinate.converts.impl.PointBezierConverter;
+import com.floyd.curve.coordinate.converts.impl.PolygonBezierConverter;
+import com.floyd.curve.coordinate.converts.impl.RectBezierConverter;
 import com.floyd.curve.service.ICurveService;
+import com.floyd.curve.utils.CurveUtils;
 import com.floyd.curve.utils.PointUtils;
 
 @Service("BezierService")
 public class BezierServiceImpl implements ICurveService {
 
-	public String draw(String src) {
+	/** 
+	 * convert to Bezier from string of normal Point
+	 */
+	public String draw4Point(String pointSrc) {
 		try {
-			return convertToc(src);
+			
+			if(StringUtils.isEmpty(pointSrc)) {
+				throw new Exception("Point could NOT be empty..");
+			}
+			// parse the string inputed and convert to PointBean
+			List<PointBean> ppList = PointUtils.fetchPoint(pointSrc);
+			
+			return pointToBezier(ppList);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return e.getMessage();
 		}
 	}
 	
-	public String convertToc(String pointSrc) throws Exception {
-		
-		if(StringUtils.isEmpty(pointSrc)) {
-			throw new Exception("Point could NOT be empty..");
+	/** 
+	 * convert to Bezier from string of Circle
+	 */
+	public String draw4Circle(String circleSrc)  {
+		try {
+			if(StringUtils.isEmpty(circleSrc)) {
+					throw new Exception("Circle could NOT be empty..");
+			}
+			
+			CircleBean circle = CurveUtils.fetchCircle(circleSrc);		
+			CircleBezierConverter convert = new CircleBezierConverter();
+			convert.setCircle(circle);
+			convert.convertToBezier();
+			
+			return pointToBezier(circle.getPointList());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
 		}
-		// parse the string inputed and convert to PointBean
-		List<PointBean> ppList = PointUtils.fetchPoint(pointSrc);
+	}
+	
+	/**
+	 * convert to Bezier from string of Rect
+	 */
+	public String draw4Rect(String rectStr) {
+		try {
+			if(StringUtils.isEmpty(rectStr)) {
+				throw new Exception("Rect String could NOT be empty..");
+			}
+			
+			RectBean rect = CurveUtils.fetchRect(rectStr);		
+			RectBezierConverter convert = new RectBezierConverter();
+			convert.setRect(rect);
+			convert.convertToBezier();
+			
+			return pointToBezier(rect.getPointList());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+	
+	
+	/**
+	 * convert to Bezier from string of Polygon
+	 */
+	public String draw4Polygon(String polyStr) {
+		try {
+			if(StringUtils.isEmpty(polyStr)) {
+				throw new Exception("Polygon String could NOT be empty..");
+			}
+			
+			PolygonBean poly = new PolygonBean();	
+			poly.setOriginStr(polyStr);
+			
+			PolygonBezierConverter convert = new PolygonBezierConverter();
+			convert.setPoly(poly);
+			convert.convertToBezier();
+			
+			return pointToBezier(poly.getPointList());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+	
+	/**
+	 * Convert point to Bezier
+	 * @param pointSrc
+	 * @return
+	 * @throws Exception
+	 */
+	private String pointToBezier(List<PointBean> ppList) throws Exception {
 		
-		BezierConverter convert = new BezierConverter();
+		PointBezierConverter convert = new PointBezierConverter();
 		if(ppList==null || ppList.size()==0) {
 			return "Wrong! Calculation Has Exception!";
 		}
-		
 		
 		PointBean virtualPoint = firstP2c();
 		for(int i=0; i<ppList.size(); i++) {
@@ -68,7 +149,7 @@ public class BezierServiceImpl implements ICurveService {
 	}
 	
 	/**
-	 * fill up a virtual point with six 0 coordinate in c system
+	 * fill up a virtual point with six 0 coordinate within c system
 	 * @param p0
 	 * @return
 	 */
@@ -94,12 +175,18 @@ public class BezierServiceImpl implements ICurveService {
 		for (int i = 0; i < ppList.size(); i++) {
 			pp = ppList.get(i);
 			// if its first point which usually starts with "M"
-			if(StringUtils.equals(pp.getAlphaStr(), "M")) {
+			if(pp.isBeginPoint()) {
 				result.append(pp.getAlphaStr())
 					.append(pp.getArrayCoordinate().get(0))
 					.append(",")
 					.append(pp.getArrayCoordinate().get(1));
 					
+				continue;
+			}
+			
+			// if its last point which usually starts with "z"
+			if(pp.isEndPoint()) {
+				result.append(pp.getAlphaStr());
 				continue;
 			}
 			

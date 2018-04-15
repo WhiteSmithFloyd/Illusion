@@ -1,8 +1,9 @@
-package com.floyd.curve.coordinate.converts;
+package com.floyd.curve.coordinate.converts.impl;
 
 import com.floyd.curve.bean.PointBean;
+import com.floyd.curve.coordinate.converts.IPointConverter;
 
-public class BezierConverter implements IBezierAlgoService {
+public class PointBezierConverter implements IPointConverter {
 
 	private PointBean prevPoint;
 	private PointBean curPoint;
@@ -20,7 +21,7 @@ public class BezierConverter implements IBezierAlgoService {
 		System.out.println("This is outter converter!! finish!");
 	}
 
-	public void launch(PointBean curPoint, PointBean prevPoint) {
+	public void launch(PointBean curPoint, PointBean prevPoint) throws Exception {
 		init(this);
 		
 		this.curPoint = curPoint;
@@ -28,9 +29,9 @@ public class BezierConverter implements IBezierAlgoService {
 		convert.convertToBezier();
 	}
 
-	private IBezierAlgoService convert = null;
+	private IPointConverter convert = null;
 	
-	private void init(IBezierAlgoService convert) {
+	private void init(IPointConverter convert) {
 		if(this.convert != null) 
 			return ;
 		
@@ -42,18 +43,20 @@ public class BezierConverter implements IBezierAlgoService {
 		this.convert = new AlgoBezierFromH(this.convert);
 		// 4 v
 		this.convert = new AlgoBezierFromV(this.convert);
+		// 4 c
+		this.convert = new AlgoBezierFromC(this.convert);
 	}
 	
 	public void changeFromAbs() {
 		return ;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		PointBean point = new PointBean();
 		point.setAlphaStr("123test");
 		PointBean prevPoint = new PointBean();
 		prevPoint.setAlphaStr("prev Point");
-		BezierConverter aa = new BezierConverter();
+		PointBezierConverter aa = new PointBezierConverter();
 		
 		aa.launch(point, prevPoint);
 		

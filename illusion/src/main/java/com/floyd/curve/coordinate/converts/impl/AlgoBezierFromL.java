@@ -1,14 +1,15 @@
-package com.floyd.curve.coordinate.converts;
+package com.floyd.curve.coordinate.converts.impl;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.floyd.curve.bean.PointBean;
 import com.floyd.curve.coordinate.algo.IToCSystem;
 import com.floyd.curve.coordinate.algo.IToRelative;
-import com.floyd.curve.coordinate.algo.c.HToC;
-import com.floyd.curve.coordinate.algo.relative.HToRelative;
+import com.floyd.curve.coordinate.algo.c.LToC;
+import com.floyd.curve.coordinate.algo.relative.LToRelative;
+import com.floyd.curve.coordinate.converts.IPointConverter;
 
-public class AlgoBezierFromH implements IBezierAlgoService {
+public class AlgoBezierFromL implements IPointConverter {
 
 	public PointBean getCurPoint() {
 		return algoService.getCurPoint();
@@ -18,9 +19,9 @@ public class AlgoBezierFromH implements IBezierAlgoService {
 		return algoService.getPrevPoint();
 	}
 	
-	private IBezierAlgoService algoService ; 
+	private IPointConverter algoService ; 
 	
-	public AlgoBezierFromH(IBezierAlgoService algoService) {
+	public AlgoBezierFromL(IPointConverter algoService) {
 		this.algoService = algoService;
 	}
 	
@@ -28,13 +29,13 @@ public class AlgoBezierFromH implements IBezierAlgoService {
 	
 	private IToRelative relativeImpl;
 	
-	public void convertToBezier() {
-//		System.out.println("This is convert of little h !");
+	public void convertToBezier() throws Exception {
+//		System.out.println("This is convert of little l !");
 //		System.out.println("point is !" + getCurPoint().getAlphaStr() + ";Prev:" + getPrevPoint().getAlphaStr());
 //		System.out.println("---------------------------------");
 		
-		toCsysImpl = new HToC();
-		relativeImpl = new HToRelative();
+		toCsysImpl = new LToC();
+		relativeImpl = new LToRelative();
 		
 		if(check()) {	
 			// change point form absolute to related
@@ -42,19 +43,19 @@ public class AlgoBezierFromH implements IBezierAlgoService {
 			System.out.println("---------------SUCCESS for abs Point------------------");
 			
 			if(toCsysImpl.change(getCurPoint(), getPrevPoint())) {
-				System.out.println("==[SUCCESS] For[h] pointBean:" + getCurPoint());
+				System.out.println("==[SUCCESS] For[l] pointBean:" + getCurPoint());
 			} else {
-				System.out.println("==[FAIL] For[h] converting failed!! ");
+				System.out.println("==[FAIL] For[l] converting failed!! ");
 			}
 		} else {
-//			System.out.println("== Current Point is not [h]");
-		}
+//			System.out.println("== Current Point is not [l]");
+		}			
 		algoService.convertToBezier();
 	}
-	
+
 	private boolean check() {
 		PointBean cp = getCurPoint();
-		if(StringUtils.equalsIgnoreCase(cp.getAlphaStr(), "h")) {
+		if(StringUtils.equalsIgnoreCase(cp.getAlphaStr(), "l")) {
 			return true;
 		}
 		return false;

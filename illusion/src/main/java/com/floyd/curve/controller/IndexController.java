@@ -8,12 +8,12 @@ public class IndexController {
 
 	@RequestMapping(value="/")
 	public String idx(){
-		return "/index";
+		return "index";
 	}
 	
 	@RequestMapping(value="/getTry")
 	public String getTry() {
-		return "/demo/try";
+		return "demo/try";
 	}
 	
 }

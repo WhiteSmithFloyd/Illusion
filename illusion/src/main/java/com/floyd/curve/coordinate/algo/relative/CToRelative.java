@@ -7,8 +7,8 @@ import com.floyd.curve.bean.PointBean;
 import com.floyd.curve.coordinate.algo.IToRelative;
 
 
-@Component("relativeS")
-public class SToRelative implements IToRelative {
+@Component("relativeC")
+public class CToRelative implements IToRelative {
 
 	@Override
 	public boolean relative(PointBean curP, PointBean prevP) {
@@ -19,15 +19,15 @@ public class SToRelative implements IToRelative {
 		
 		// deal with absolute coordinate
 		
-		// Sa,b,c,d -> c(a-prevX, b-prevY, c-prevX, d-prevY)
+		// Ca,b,c,d,e,f -> c(a-prevX, b-prevY, c-prevX, d-prevY, e-prevX, f-prevY)
 		// checking
-		if(curP.getArrayCoordinate().size()<4) {
-			for(int i=0;i<4;i++) {
+		if(curP.getArrayCoordinate().size()<6) {
+			for(int i=0;i<6;i++) {
 				curP.getArrayCoordinate().set(i, 0d);
 			}
 		}
 		double item = 0;
-		for(int i=0; i<4; i++) {
+		for(int i=0; i<6; i++) {
 			item = curP.getArrayCoordinate().get(i);
 			// for x
 			if(i%2==0) 
