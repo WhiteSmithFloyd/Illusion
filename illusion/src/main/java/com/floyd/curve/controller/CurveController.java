@@ -22,28 +22,69 @@ public class CurveController {
 	@RequestMapping(value="/g2b", method=RequestMethod.GET)
 	public String getToBezier() {
 //		return "Please use the Post method to request...";
-		return curvService.draw4Point(testStr);
+		try {
+			return curvService.draw4Point(testStr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "{\"errMsg\": "+ e.getMessage()+"}";
+		}
 	}
 	
 	@RequestMapping(value="/p2b", method=RequestMethod.POST)
 	public String postToBizier(@RequestParam("oriCurStr") String oriCurStr) {
 		System.out.println("===[Input] oriCurStr:" + oriCurStr);
-		return curvService.draw4Point(oriCurStr);
+		try {
+			String c = curvService.draw4Point(oriCurStr);
+			return "{\"bPointList\": [{\"bData\":\"" + c + "\"}]}";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "{\"errMsg\": "+ e.getMessage()+"}";
+		}
 	}
 	
 	@RequestMapping(value="/circle2b", method=RequestMethod.POST)
 	public String postCircleToBizier(@RequestParam("oriCirStr") String oriCirStr) {
-		return curvService.draw4Circle(oriCirStr);
+		try {
+			String c =  curvService.draw4Circle(oriCirStr);
+			return "{\"bPointList\": [{\"bData\":\"" + c + "\"}]}";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "{\"errMsg\": "+ e.getMessage()+"}";
+		}
 	}
 	
 	@RequestMapping(value="/rect2b", method=RequestMethod.POST)
 	public String postRectToBizier(@RequestParam("oriRectStr") String oriRectStr) {
-		return curvService.draw4Rect(oriRectStr);
+		try {
+			String c =  curvService.draw4Rect(oriRectStr);
+			return "{\"bPointList\": [{\"bData\":\"" + c + "\"}]}";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "{\"errMsg\": "+ e.getMessage()+"}";
+		}
 	}
 	
 	@RequestMapping(value="/poly2b", method=RequestMethod.POST)
 	public String postPolygonToBizier(@RequestParam("oriPolyStr") String oriPolyStr) {
-		return curvService.draw4Polygon(oriPolyStr);
+		try {
+			String c =  curvService.draw4Polygon(oriPolyStr);
+			return "{\"bPointList\": [{\"bData\":\"" + c + "\"}]}";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "{\"errMsg\": "+ e.getMessage()+"}";
+		}
+	}
+	
+	@RequestMapping(value="/transferAnim", method=RequestMethod.POST)
+	public String postTransferAnimate(@RequestParam("fromCurStr") String fromCurStr, 
+			@RequestParam("toCurStr") String toCurStr) {
+		try {
+			String jsonStr =  curvService.animate4Transfer(fromCurStr, toCurStr);
+			return jsonStr;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "{\"errMsg\": "+ e.getMessage()+"}";
+		}
 	}
 	
 }
