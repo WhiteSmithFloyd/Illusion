@@ -261,25 +261,54 @@ public class PointBean {
 	public double getC1() {
 		return c1;
 	}
+	
+	public String getC1toStr() {
+		return doubleToStr(c1);
+	}
 
 	public double getC2() {
 		return c2;
 	}
 
+	
+	public String getC2toStr() {
+		return doubleToStr(c2);
+	}
+	
 	public double getC3() {
 		return c3;
+	}
+	
+	public String getC3toStr() {
+		return doubleToStr(c3);
 	}
 
 	public double getC4() {
 		return c4;
 	}
+	
+	public String getC4toStr() {
+		return doubleToStr(c4);
+	}
 
 	public double getC5() {
 		return c5;
 	}
+	
+	public String getC5toStr() {
+		return doubleToStr(c5);
+	}
 
 	public double getC6() {
 		return c6;
+	}
+	
+	public String getC6toStr() {
+		return doubleToStr(c6);
+	}
+	
+	private String doubleToStr(double d) {
+		return String.format("%.2f", d);
 	}
 
 	@Override
