@@ -191,17 +191,17 @@ public class BezierServiceImpl implements ICurveService {
 			}
 			
 			result.append("c")
-				.append(pp.getC1())
+				.append(pp.getC1toStr())
 				.append(",")
-				.append(pp.getC2())
+				.append(pp.getC2toStr())
 				.append(",")
-				.append(pp.getC3())
+				.append(pp.getC3toStr())
 				.append(",")
-				.append(pp.getC4())
+				.append(pp.getC4toStr())
 				.append(",")
-				.append(pp.getC5())
+				.append(pp.getC5toStr())
 				.append(",")
-				.append(pp.getC6());
+				.append(pp.getC6toStr());
 		}
 		return result.toString();
 	}
